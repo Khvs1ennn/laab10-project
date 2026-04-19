@@ -1,0 +1,147 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+  body { 
+    font-family: sans-serif; 
+    background: #ffffff; 
+    display: flex; 
+    justify-content: center; 
+    padding: 2rem 1rem;
+     min-height: 100vh; }
+  .game-wrap { 
+    width: 100%; 
+    max-width: 700px; }
+  h1 { 
+    font-size: 20px; 
+    font-weight: 500; 
+    margin-bottom: 1.5rem;
+    color: #1a1a1a; }
+  .track { 
+    background: #29e59a; 
+    border: 0.5px solid #ddd; 
+    border-radius: 12px; 
+    padding: 1.25rem; 
+    margin-bottom: 1rem; }
+  .player-row { 
+    display: flex; 
+    align-items: center;
+    gap: 10px; 
+    margin-bottom: 14px; }
+  .player-row:last-child { 
+    margin-bottom: 0; }
+  .player-label { 
+    font-size: 13px; 
+    font-weight: 500; 
+    color: #6c5d5d; 
+    width: 72px; 
+    flex-shrink: 0; }
+  .track-area { 
+    flex: 1; 
+    position: relative; 
+    height: 36px; }
+  .track-line { 
+    position: absolute; 
+    bottom: 0; left: 0; 
+    right: 0; 
+    border-bottom: 1.5px dashed #ccc; }
+  .finish-line { 
+    position: absolute; 
+    right: 0; 
+    top: 0; 
+    bottom: 0; 
+    width: 12px; 
+    background: repeating-linear-gradient(180deg, #111 0px, #111 6px, #fff 6px, #fff 12px); 
+    opacity: 0.7; }
+  .horse { 
+    position: absolute; 
+    font-size: 22px; 
+    bottom: 0; 
+    transition: left 0.4s ease; }
+  .pos-bar { 
+    position: absolute; 
+    bottom: 0; 
+    height: 4px; 
+    background: #449eff; 
+    border-radius: 2px; 
+    transition: width 0.4s ease; 
+    opacity: 0.5; }
+  .score-badge { 
+    font-size: 13px; 
+    padding: 4px 10px; 
+    border-radius: 20px; 
+    background: #f1efe8; 
+    color: #7f7652; 
+    border: 0.5px solid #d3d1c7; 
+    white-space: nowrap; }
+  .controls { 
+    display: flex; 
+    gap: 10px; 
+    align-items: center; 
+    flex-wrap: wrap; 
+    margin-bottom: 1rem; }
+  .roll-btn { 
+    padding: 8px 20px; 
+    border-radius: 8px; 
+    border: 0.5px solid #ccc; 
+    background: #fff; 
+    color: #1a1a1a; 
+    font-size: 14px; 
+    font-weight: 500; 
+    cursor: pointer; }
+  .roll-btn:disabled { 
+    opacity: 0.4; 
+    cursor: not-allowed; }
+  .roll-btn:hover:not(:disabled) { 
+    background: #f5f5f0; }
+  .reset-btn { 
+    font-size: 13px; 
+    color: #666; 
+    background: none; 
+    border: 0.5px solid #ddd; 
+    border-radius: 8px; 
+    padding: 6px 14px; 
+    cursor: pointer; }
+  .reset-btn:hover { 
+    background: #f5f5f0; }
+  .shagai-tray { 
+    display: flex; 
+    gap: 6px; 
+    flex-wrap: wrap; 
+    margin-bottom: 0.5rem; 
+    min-height: 32px; }
+  .shagai-chip { 
+    font-size: 13px; 
+    padding: 4px 10px; 
+    border-radius: 20px; 
+    border: 0.5px solid #ccc; 
+    color: #5f5e5a; 
+    background: #f1efe8; }
+  .shagai-chip.horse-type { 
+    background: #FAEEDA; 
+    color: #2f1b04; 
+    border-color: #ffa51f; 
+    font-weight: 500; }
+  .shagai-chip.camel-type { 
+    background: #E1F5EE; 
+    color: #0cb97a; 
+    border-color: #1D9E75; }
+  .shagai-chip.goat-type  { 
+    background: #EEEDFE; 
+    color: #26215C; 
+    border-color: #6a48fe; }
+  .shagai-chip.sheep-type { 
+    background: #FAECE7; 
+    color: #9f0f0f; 
+    border-color: #D85A30; }
+  .log { 
+    font-size: 12px; 
+    color: #999; 
+    min-height: 18px; }
+  .winner-banner { 
+    text-align: center; 
+    padding: 12px; 
+    border-radius: 8px;
+    background: #64eaf3; 
+    color: #e1ff00; 
+    font-weight: 500; 
+    font-size: 15px; 
+    margin-bottom: 1rem; 
+    display: none; }

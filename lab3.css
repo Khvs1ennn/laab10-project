@@ -1,0 +1,22 @@
+.box {
+    width: 100px;
+    height: 100px;
+    background-color: rgb(103, 210, 246);
+    /* margin нь гадна заиг тодорхойлдог. */
+    /* margin:50px гэдэг нь бүх талаараа 50px зайтай байна гэсэн үг,*/
+    margin: 50px;
+}
+.box2 {
+    width: 200px;
+    height: 100px;
+    background-color: rgb(250, 102, 211);
+    /* энэ 70px зайтай. */
+    margin: 70px;
+}
+.box3 {
+    width: 100px;
+    height: 200px;
+    background-color: hwb(65 37% 0%);
+    /* энэ болохоор 10px зайтай байна гжсэн үг. */
+    margin: 10px;
+}

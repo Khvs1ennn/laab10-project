@@ -1,0 +1,31 @@
+
+.container {
+    height: 100px;
+    width: 100px;
+    border: 5px solid #e7ce30;
+    display: flex;
+    /* align-items нь доторх box-ийг дээд-доод чиглэлд center байрлуулна. */
+    align-items: center;
+}
+.container2 {
+    height: 100px;
+    width: 100px;
+    border: 5px solid #e7ce30;
+    display: flex;
+    /* justify-content нь доторх box-ийг зүүн-баруун чиглэлд center байрлуулна. */
+    justify-content: center;
+}
+.container3 {
+    height: 100px;
+    width: 100px;
+    border: 5px solid #e7ce30;
+    display: flex;
+    /* дээд талын тайлбарыг илүү ойлгомжтой болговол: align-items болон justify-content хоёуланг нь center болгох нь аль аль талыг нь төвд байрлуулна гэсэн үг. */
+    align-items: center;
+    justify-content: center;
+}
+.box5 {
+    width: 50px;
+    height: 50px;
+    background-color: rgb(103, 210, 246);
+}

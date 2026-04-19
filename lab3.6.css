@@ -1,0 +1,9 @@
+.box11 {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+}
+.box12 {
+    background-color: rgb(250, 102, 211) !important;
+    /* !important нь override-ыг даваад буюу өмнөх red-ийг давж ягаан болж харагдана аа гэсэн үг.   */
+}

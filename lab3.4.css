@@ -1,0 +1,9 @@
+.box6 {
+    width: 200px;
+    height: 200px;
+    background-color: rgb(221, 221, 221);
+    /* boder нь хүрээ үүсгэдэг. */
+    border: 20px solid rgb(55, 221, 236);
+    /* outline нь border-ийн гадна нэмэлт хүрээ бий болгодог. */
+    outline: 10px solid rgb(186, 31, 31);
+}

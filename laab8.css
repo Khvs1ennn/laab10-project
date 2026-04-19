@@ -1,0 +1,58 @@
+    body {
+        background-color: #64c8da;
+        display: flex-start;
+        justify-content: center;
+        align-items: center;
+        color: white;
+    }
+    .container {
+        display: flex;
+        gap: 40px;
+        align-items: center;
+        background: rgba(144, 56, 56, 0.1);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(75, 28, 187, 0.889);
+        width: 300px;
+        height: 300px;
+        text-align: left;
+    }
+    .form-section {
+      flex: center;
+      font-size: 16px;
+    }
+    .table-section {
+      margin-top: 20px;
+      flex: center;
+    }
+    table, th, td {
+      border: 1px solid rgb(146, 43, 219);
+      border-collapse: collapse;
+      padding: 10px;
+    }
+    th {
+      background-color: #23afd9;
+    }
+    .delete-btn {
+      color: red;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 3px;
+    }
+    input {
+        width: 170%;
+        padding: 5px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+    }
+    button {
+        font-size: 16px;
+        padding: 7px 20px;
+        text-align: center;
+        background-color: #2f97c1;
+        color: white;   
+    }

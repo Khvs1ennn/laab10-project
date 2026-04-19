@@ -1,0 +1,70 @@
+<head>
+    <title>Миний вэб</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="header">
+     <button onclick="showHome()">Нүүр хуудас</button>
+     <button onclick="showImages()">Зургууд</button>
+     <button onclick="showPosts()">Бичлэгүүд</button>
+     <button onclick="showMap()">Газрын зураг</button>
+  </div>
+
+  <div class="main">
+
+     <div class="left">
+         <div class="photo">
+          <img src="" alt="" width="" height="">
+         </div>
+         <p><b>Хувийн мэдээлэл</b></p>
+         <p>Нэр: Б.Ариунхүслэн</p>
+         <p>Нас: 18</p>
+         <p>Сонирхол: Код бичих</p>
+     </div>
+     <div class="right" id="content">
+         <h2>Агуулга</h2>
+     </div>
+   </div>
+
+ <div class="footer">
+      Гэрийн хаяг: Улаанбаатар хот
+ </div>
+
+ <script>
+     function showHome() {
+         document.getElementById("content").innerHTML =
+         "<h2>HELLO EVERYONE ;) <br> Welcome to my homework kkk</h2>" 
+        }
+
+     function showImages() {
+         document.getElementById("content").innerHTML =
+         "<h2>Зургууд</h2>" +
+         "<img src='C:\\Users\\ariunkhuslen\\Downloads\\e55a5781-521f-44a9-8186-25925191360c.jpg' alt='Миний зураг' width='300' height='300'><p>Идэж буй юмныхаа зургийг байнга дардаг</p>" +
+         "<img src='C:\\Users\\ariunkhuslen\\Downloads\\590c7f1e-2c58-4c76-ada3-b1e65d6ee146.jpg' alt='Миний зураг' width='300' height='300'><p>Бас хөөрхөн тохижилттой газар харвал шууд утсаа гаргаад зураг дардаг.</p>" +
+         "<img src='C:\\Users\\ariunkhuslen\\Downloads\\2db1b17e-8273-4ed7-850e-c63084eee677.jpg' alt='Миний зураг' width='300' height='300'><p>Мэдээж цэцгийг бол мартахгүй хха >_<"
+        
+        }
+
+     function showPosts() {
+         document.getElementById("content").innerHTML =
+         "<h2>Бичлэгүүд</h2>" +
+         "<video width='300' height='300' controls>" +
+             "<source src='C:\\Users\\ariunkhuslen\\Downloads\\00ec473a-af72-41b2-be22-914aee6eb2b0.mp4' type='video/mp4'>" +
+         "</video>" +
+         "<br>" +
+         "<video width='300' height='300' controls>" +
+             "<source src='C:\\Users\\ariunkhuslen\\Downloads\\3f9956e2-a44b-4cae-b71b-932a2618126c.mp4' type='video/mp4'>" +
+         "</video>";
+
+        }
+
+     function showMap() {
+         document.getElementById("content").innerHTML =
+         "<h2>Газрын зураг</h2>" +
+         "<iframe src='https://www.google.com/maps?q=Ulaanbaatar&output=embed' width='350' height='350'></iframe>";
+        }
+  </script>
+
+</body>

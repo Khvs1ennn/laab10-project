@@ -1,0 +1,8 @@
+.box4 {
+    width: 100px;
+    background-color: rgb(91, 187, 235);
+    border: 10px solid black;
+    /* padding нь дотор зайг тохируулдаг. */
+    /* 90px гэдэг нь текстийг хүрээнээс 90px холдуулна гэсэн үг. */
+    padding: 90px;
+}

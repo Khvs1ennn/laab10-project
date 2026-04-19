@@ -1,0 +1,181 @@
+<head>
+<title>Boyer-Moore</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #74c9d2;
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.container {
+  width: 650px;
+  background: rgb(251, 248, 101);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+button {
+  padding: 10px;
+  margin: 5px;
+  background: rgb(209, 91, 126);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.result {
+  margin-top: 20px;
+  padding: 10px;
+  background: #eee;
+  font-family: monospace;
+}
+
+.highlight {
+  background: lightgreen;
+}
+
+.pointer {
+  color: red;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Boyer-Moore (Auto Animation)</h2>
+
+  <input id="text" value="Here is a simple example">
+  <input id="pattern" value="example">
+
+  <button onclick="start()">▶ Start</button>
+  <button onclick="stop()">⏹ Stop</button>
+
+  <label>Speed (ms):</label>
+  <input id="speed" type="number" value="800">
+
+  <div class="result" id="output"></div>
+</div>
+
+<script>
+let steps = [];
+let currentStep = 0;
+let interval = null;
+
+function start() {
+  const text = document.getElementById("text").value;
+  const pattern = document.getElementById("pattern").value;
+  const speed = parseInt(document.getElementById("speed").value);
+
+  steps = generateSteps(text, pattern);
+  currentStep = 0;
+
+  clearInterval(interval);
+
+  interval = setInterval(() => {
+    if (currentStep >= steps.length) {
+      clearInterval(interval);
+      return;
+    }
+    showStep();
+    currentStep++;
+  }, speed);
+}
+
+function stop() {
+  clearInterval(interval);
+}
+
+function showStep() {
+  const step = steps[currentStep];
+  const output = document.getElementById("output");
+
+  let display = "";
+
+  for (let i = 0; i < step.text.length; i++) {
+    if (i >= step.shift && i < step.shift + step.pattern.length) {
+      display += `<span class="highlight">${step.text[i]}</span>`;
+    } else {
+      display += step.text[i];
+    }
+  }
+
+  output.innerHTML = `
+    ${display}
+    <br>
+    <span class="pointer">Shift: ${step.shift}</span>
+    <br>
+    Compare index: ${step.compareIndex}
+    <br>
+    ${step.message}
+  `;
+}
+
+// generate steps
+function generateSteps(text, pattern) {
+  const steps = [];
+  const badChar = {};
+
+  for (let i = 0; i < pattern.length; i++) {
+    badChar[pattern[i]] = i;
+  }
+
+  let shift = 0;
+
+  while (shift <= text.length - pattern.length) {
+    let j = pattern.length - 1;
+
+    while (j >= 0) {
+      steps.push({
+        text,
+        pattern,
+        shift,
+        compareIndex: j,
+        message: `Comparing '${pattern[j]}' with '${text[shift + j]}'`
+      });
+
+      if (pattern[j] !== text[shift + j]) break;
+      j--;
+    }
+
+    if (j < 0) {
+      steps.push({
+        text,
+        pattern,
+        shift,
+        compareIndex: j,
+        message: "✅ MATCH FOUND!"
+      });
+      break;
+    } else {
+      const badIndex = badChar[text[shift + j]];
+      const move = Math.max(1, j - (badIndex ?? -1));
+
+      steps.push({
+        text,
+        pattern,
+        shift,
+        compareIndex: j,
+        message: `❌ Mismatch → shift ${move}`
+      });
+
+      shift += move;
+    }
+  }
+
+  return steps;
+}
+</script>
+
+</body>

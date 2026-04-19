@@ -1,0 +1,27 @@
+.box7 {
+    width: 200px;
+    height: 200px;
+    background-color: rgb(0, 42, 255);
+}
+.box8 {
+    width: 200px;
+    height: 200px;
+    background-color: rgb(0, 42, 255);
+    /* opacity нь өнгийн тодорхойлолтыг 0.0-ээс 1.0 хооронд тооцоолдог. */
+    /* opacity: 0.0 нь өнгийг бүрэн алга болгоно. */
+    opacity: 0.0;
+}
+.box9 {
+    width: 200px;
+    height: 200px;
+    background-color: rgb(0, 42, 255);
+    /* opacity: 0.5 нь өнгийг 50%-ийг л ил тод харагдуулна. */
+    opacity: 0.5;
+}
+.box10 {
+    width: 200px;
+    height: 200px;
+    background-color: rgb(0, 42, 255);
+    /* opacity: 1.0 нь өнгийг бүрэн харагдуулна. */
+    opacity: 1.0;
+}

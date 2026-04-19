@@ -1,0 +1,49 @@
+<head>
+    <title>Algoritm Jishee</title>
+    <link rel="stylesheet" href="laab4.css">
+</head>
+<body>
+    <div class="form-container">
+        <h1>Creative account</h1>
+        <form onsubmit="return Checkpassword();" action="laaab2hw.html">
+            <label for="name">Нэр:</label><br>
+            <input type="text" id="name" name="name"><br><br>
+
+            <label for="email">И-мэйл:</label><br>
+            <input type="email" id="email" name="email"><br><br>
+
+            <label for="password">Нууц үг:</label><br>
+            <input type="password" id="password" name="password"><br><br>
+
+            <input type="submit" value="log In ->">
+        </form>
+    </div> 
+    <script>
+        function checkPassword() {
+          let password = document.getElementById("password").value;
+          if (password.length < 8) {
+            alert("Password is too short");
+            return false;
+          }
+          if (!/[A-Z]/.test(password)) {
+            alert("Password needs an uppercase letter");
+            return false;
+          }
+          if (!/[0-9]/.test(password)) {
+            alert("Password needs a number");
+            return false;
+          }
+        }
+
+        function Checkpassword() {
+            let password = document.getElementById("password").value;
+            let result = checkPassword();
+
+            if (result === false) {
+                return false;
+            }
+            alert("Form submitted successfully!");
+            return true;
+        }  
+    </script> 
+</body>

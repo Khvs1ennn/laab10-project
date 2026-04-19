@@ -1,0 +1,73 @@
+<head>
+  <title>Хэрэглэгчийн бүртгэл</title>
+  <link rel="stylesheet" href="laab8.css">
+</head>
+<body>
+  <h2>Хэрэглэгчийн бүртгэл</h2>
+
+    <div class="container">
+        <div class="form-section">
+            <label for="surname">Овог:</label><br>
+            <input type="text" id="surname" name="surname"><br><br>
+
+            <label for="name">Нэр:</label><br>
+            <input type="text" id="name" name="name"><br><br>
+
+            <label for="age">Нас:</label><br>
+            <input type="number" id="age" name="age"><br><br>
+            <button onclick="registerUser()">Бүртгэх</button>
+        </div>
+    </div>
+  <br><br>
+    <div class="table-section">
+        <table id="userTable">
+            <thead>
+                <tr>
+                   <th>№</th>
+                   <th>Овог</th>
+                   <th>Нэр</th>
+                   <th>Нас</th>
+                   <th>Үйлдэл</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+  <script>
+    let counter = 0;
+
+    function registerUser() {
+      const surname = document.getElementById("surname").value.trim();
+      const name = document.getElementById("name").value.trim();
+      const age = document.getElementById("age").value.trim();
+
+      if (!surname || !name || !age) {
+        alert("Бүх талбарыг бөглөнө үү!");
+        return;
+      }
+
+      counter++;
+      const table = document.getElementById("userTable").getElementsByTagName("tbody")[0];
+      const newRow = table.insertRow();
+
+      newRow.insertCell(0).innerText = counter;
+      newRow.insertCell(1).innerText = surname;
+      newRow.insertCell(2).innerText = name;
+      newRow.insertCell(3).innerText = age;
+
+      const actionCell = newRow.insertCell(4);
+      const deleteBtn = document.createElement("span");
+      deleteBtn.innerText = "X";
+      deleteBtn.className = "delete-btn";
+      deleteBtn.onclick = function() {
+        table.deleteRow(newRow.rowIndex - 1);
+      };
+      actionCell.appendChild(deleteBtn);
+
+      document.getElementById("surname").value = "";
+      document.getElementById("name").value = "";
+      document.getElementById("age").value = "";
+    }
+  </script>
+</body>

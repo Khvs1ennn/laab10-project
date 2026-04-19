@@ -1,0 +1,45 @@
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        result {
+            margin-top: 20px;
+            font-size: 18px;
+            background-color: aqua;
+            padding: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>AND Data</h1>
+    <button onclick="ANDDATA()">Train and Test AND Data</button>
+    <div onclick="console.log('Output clicked')">
+        <output id="result"></output>
+    </div>
+<script>
+async function ANDDATA() {
+    for (let i = 0; i < 100; i++) {
+        await trainModel();
+    }
+    for (const data of ANDData) {
+        let h1 = data[0] * w1[0][0] + data[1] * w2[1][0] + b1[0];
+        let h2 = data[0] * w1[0][1] + data[1] * w2[0][1] + b2[1];
+        let output = h1 * w2[0] + h2 * w2[1] + b2;
+        
+        let predicted = output >= 0.5 ? 1 : 0;
+        console.log(`Input: ${data.slice(0, 2)}, Predicted: ${predicted}, Actual: ${data[2]}`);
+    }
+
+    
+}
+</script>
+</body>

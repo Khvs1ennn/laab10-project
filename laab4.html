@@ -1,0 +1,45 @@
+<head>
+    <title>HTML Forms</title>
+    <link rel="stylesheet" href="laab4.css">
+</head>
+<body>
+    <div class="form-container">
+        <h1>log In</h1>
+        <!-- form ni medeeleliig server ruu ilgeeh heseg bol action="" ni submit darahad haashaa ocih we gedgiig zaana -->
+        <form action="laaab2hw.html" method="get">
+            <label for="name">Нэр:</label><br>
+            <input type="text" id="name" name="name" required><br><br>
+            <!-- input ni hereglegcees ogogdol awah hamgiin olon torliin talbar -->
+            <!-- type atributaar ni torol ni todorhoilogddog deer bol 'text' geh met -->
+
+            <label for="email">И-мэйл:</label><br>
+            <input id="email" name="email" ><br><br>
+
+            <label for="password">Нууц үг:</label><br>
+            <input type="password" id="password" name="password"><br><br>
+            <!-- for atribut ni tuhain input talbarin id-tei holbogddog.uugeere hereglegc label deer darahad shuud tuhain talbar idewhjdeg -->
+            <!-- id-giin huwid HTML dotor neg elemented dawtagdashgui ner ognoo, ene ni tuhain elementiig busdaas tanihd ashiglagdana.jisheelbel: JAVASCRIPT-eer tuhain elementiig songohod.   -->
+
+            <input type="submit" value="log In ->">
+            <p style="font-family: Microsoft Himalaya;">or continue with</p>
+        </form>
+        <div class="social-buttons">
+            <button onclick="showFacebook()">Facebook</button>
+            <button onclick="showGoogle()">Google</button>
+            <button onclick="showInstagram()">Instagram</button>
+        </div>
+    </div> 
+    <script>
+        function showFacebook() {
+            window.open("https://www.facebook.com/", "_blank");
+        }
+
+        function showGoogle() {
+            window.open("https://www.google.com/", "_blank");
+        }
+
+        function showInstagram() {
+            window.open("https://www.instagram.com/", "_blank");
+        }       
+    </script> 
+</body>

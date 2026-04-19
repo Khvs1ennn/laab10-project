@@ -1,0 +1,100 @@
+</head>
+<link rel="stylesheet" href="algoritm9.css">
+</head>
+<body>
+<div class="container">
+  <h1>AND Neural Network</h1>
+ 
+  <div class="input-grid">
+    <div>
+      <div class="bit-label">X1</div>
+      <button class="bit-btn" id="btn-x1" onclick="toggle('x1')">0</button>
+    </div>
+    <div>
+      <div class="bit-label">X2</div>
+      <button class="bit-btn" id="btn-x2" onclick="toggle('x2')">0</button>
+    </div>
+  </div>
+ 
+  <svg class="network-svg" viewBox="0 0 360 160">
+    <circle cx="50" cy="55" r="24" fill="#1a2e10" stroke="#639922" stroke-width="1"/>
+    <text x="50" y="60" text-anchor="middle" font-size="14" font-weight="500" fill="#C0DD97" id="label-x1">0</text>
+    <text x="50" y="90" text-anchor="middle" font-size="11" fill="#639922">x1</text>
+ 
+    <circle cx="50" cy="115" r="24" fill="#1a2e10" stroke="#639922" stroke-width="1"/>
+    <text x="50" y="120" text-anchor="middle" font-size="14" font-weight="500" fill="#C0DD97" id="label-x2">0</text>
+    <text x="50" y="150" text-anchor="middle" font-size="11" fill="#639922">x2</text>
+ 
+    <circle cx="310" cy="85" r="28" fill="#243d14" stroke="#639922" stroke-width="1.5"/>
+    <text x="310" y="68" text-anchor="middle" font-size="9" fill="#97C459">AND</text>
+    <text x="310" y="92" text-anchor="middle" font-size="18" font-weight="500" fill="#C0DD97" id="label-out">0</text>
+    <text x="310" y="125" text-anchor="middle" font-size="11" fill="#639922">output</text>
+ 
+    <line x1="74" y1="60" x2="282" y2="78" stroke="#639922" stroke-width="1.5"/>
+    <line x1="74" y1="118" x2="282" y2="90" stroke="#639922" stroke-width="1.5"/>
+  </svg>
+ 
+  <div class="bit-label" style="margin-bottom:6px">Output activation</div>
+  <div class="bar-label" id="out-bar-label">sigmoid: 0.50</div>
+  <div class="progress-bar"><div class="progress-fill" id="out-bar" style="width:50%"></div></div>
+ 
+  <div class="result-card">
+    <div>
+      <div class="result-label">AND Output</div>
+      <div class="result-raw" id="out-raw"></div>
+    </div>
+    <div class="result-value" id="result-val">0</div>
+  </div>
+ 
+  <div class="bit-label" style="margin-bottom:8px">Truth table</div>
+  <table>
+    <thead><tr><th>X1</th><th>X2</th><th>AND</th></tr></thead>
+    <tbody>
+      <tr id="row-00"><td>0</td><td>0</td><td>0</td></tr>
+      <tr id="row-01"><td>0</td><td>1</td><td>0</td></tr>
+      <tr id="row-10"><td>1</td><td>0</td><td>0</td></tr>
+      <tr id="row-11"><td>1</td><td>1</td><td>1</td></tr>
+    </tbody>
+  </table>
+</div>
+ 
+<script>
+  const state = { x1: 0, x2: 0 };
+  const W = [10, 10], B = -15;
+ 
+  function sigmoid(x) { return 1 / (1 + Math.exp(-x)); }
+ 
+  function toggle(inp) {
+    state[inp] = state[inp] === 0 ? 1 : 0;
+    update();
+  }
+ 
+  function update() {
+    const x1 = state.x1, x2 = state.x2;
+    document.getElementById('btn-x1').textContent = x1;
+    document.getElementById('btn-x2').textContent = x2;
+    document.getElementById('btn-x1').className = 'bit-btn' + (x1 ? ' active' : '');
+    document.getElementById('btn-x2').className = 'bit-btn' + (x2 ? ' active' : '');
+    document.getElementById('label-x1').textContent = x1;
+    document.getElementById('label-x2').textContent = x2;
+ 
+    const raw = x1 * W[0] + x2 * W[1] + B;
+    const rawOut = sigmoid(raw);
+    const out = rawOut > 0.5 ? 1 : 0;
+ 
+    document.getElementById('label-out').textContent = out;
+    document.getElementById('out-bar').style.width = (rawOut * 100).toFixed(1) + '%';
+    document.getElementById('out-bar-label').textContent = 'sigmoid: ' + rawOut.toFixed(4);
+    document.getElementById('out-raw').textContent = 'raw: ' + raw.toFixed(1) + ' → sigmoid';
+ 
+    const rv = document.getElementById('result-val');
+    rv.textContent = out;
+    rv.className = 'result-value' + (out ? ' one' : '');
+ 
+    ['00','01','10','11'].forEach(k => document.getElementById('row-' + k).className = '');
+    document.getElementById('row-' + x1 + x2).className = 'active-row';
+  }
+ 
+  update();
+</script>
+</body>
