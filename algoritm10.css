@@ -1,0 +1,30 @@
+* { box-sizing: border-box; 
+    margin: 0; padding: 0; }
+body { font-family: system-ui, sans-serif; background: #f5f5f0; color: #1a1a18; min-height: 100vh; padding: 2rem 1rem; }
+h1 { font-size: 20px; font-weight: 600; margin-bottom: 1.5rem; }
+.controls { display: flex; gap: 10px; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.controls input { flex: 1; min-width: 200px; padding: 8px 14px; font-size: 14px; border-radius: 8px; border: 1px solid #ccc; background: #fff; color: #1a1a18; outline: none; }
+.controls input:focus { border-color: #185FA5; }
+.controls button { padding: 8px 18px; font-size: 13px; border-radius: 8px; border: 1px solid #ccc; background: #fff; color: #1a1a18; cursor: pointer; transition: background .15s; white-space: nowrap; }
+.controls button:hover { background: #e8e8e0; }
+.chain { display: flex; align-items: flex-start; gap: 0; overflow-x: auto; padding-bottom: 12px; flex-wrap: nowrap; }
+.arrow-sep { display: flex; align-items: center; padding-top: 36px; flex-shrink: 0; }
+.block { border: 1px solid #d0d0c8; border-radius: 12px; background: #fff; width: 172px; flex-shrink: 0; overflow: hidden; transition: border-color .2s; cursor: pointer; }
+.block:hover { border-color: #888; }
+.block.tampered { border: 1.5px solid #E24B4A; }
+.block-header { padding: 8px 12px 6px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+.block-num { font-size: 11px; font-weight: 600; color: #666; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #639922; }
+.dot.invalid { background: #E24B4A; }
+.block-body { padding: 8px 12px 10px; display: flex; flex-direction: column; gap: 6px; }
+.field-label { font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 1px; }
+.field-val { font-size: 11px; font-family: 'Courier New', monospace; word-break: break-all; line-height: 1.4; color: #1a1a18; }
+.field-val.hash-val { color: #185FA5; }
+.field-val.hash-val.bad { color: #E24B4A; }
+.field-val.data-val { font-family: system-ui, sans-serif; font-size: 12px; }
+.status-bar { margin-top: 1rem; padding: 10px 14px; border-radius: 8px; font-size: 13px; border: 1px solid #d0d0c8; background: #f0f0e8; color: #555; }
+.status-bar.ok { border-color: #639922; color: #2d5a0a; background: #eaf3de; }
+.status-bar.bad { border-color: #E24B4A; color: #8a2020; background: #fce8e8; }
+.hint { font-size: 12px; color: #999; margin-top: 10px; }
+.node-row { display: flex; align-items: center; gap: 6px; margin-bottom: 14px; font-size: 13px; color: #666; }
+.ndot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }

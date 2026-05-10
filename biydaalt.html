@@ -1,0 +1,970 @@
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moon Dance — Формейшн Бүжгийн Хамтлаг</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #050508;
+    --dark: #0a0a10;
+    --card: #0f0f18;
+    --border: rgba(0,255,160,0.15);
+    --green: #00ffa0;
+    --green-dim: rgba(0,255,160,0.6);
+    --gold: #d4af72;
+    --white: #f0ede8;
+    --muted: rgba(240,237,232,0.45);
+    --glass: rgba(15,15,24,0.85);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--green);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width 0.2s, height 0.2s;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid var(--green-dim);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease, width 0.3s, height 0.3s, opacity 0.3s;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 30%, rgba(0,255,160,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(212,175,114,0.05) 0%, transparent 60%),
+      linear-gradient(180deg, #050508 0%, #08080f 100%);
+  }
+
+  /* Animated moon */
+  .moon {
+    position: absolute;
+    top: 8vh; right: 10vw;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #d4af72, #8b6914 60%, #3a2a05 100%);
+    box-shadow:
+      0 0 40px rgba(212,175,114,0.2),
+      0 0 120px rgba(212,175,114,0.07),
+      inset -15px -10px 30px rgba(0,0,0,0.6);
+    animation: moonFloat 8s ease-in-out infinite;
+  }
+  .moon::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 60% 20%, rgba(255,255,220,0.15), transparent 50%);
+  }
+  @keyframes moonFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-18px) rotate(3deg); }
+  }
+
+  /* Stars */
+  .stars {
+    position: absolute; inset: 0;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--d, 3s) ease-in-out infinite var(--delay, 0s);
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.3); }
+  }
+
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.3s forwards;
+  }
+
+  .hero-title {
+    font-size: clamp(4rem, 12vw, 9rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.5s forwards;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+    display: block;
+  }
+
+  .hero-subtitle {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--muted);
+    margin-top: 2rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.9s forwards;
+  }
+
+  .hero-medal {
+    margin-top: 3rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 1.8rem;
+    border: 1px solid rgba(212,175,114,0.3);
+    background: rgba(212,175,114,0.04);
+    font-size: 0.85rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.2s forwards;
+  }
+  .hero-medal .medal-icon { font-size: 1.2rem; }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    animation: fadeIn 1s ease 2s forwards;
+    opacity: 0;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, var(--green), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.2); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.5rem 4vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(5,5,8,0.9), transparent);
+    backdrop-filter: blur(2px);
+  }
+  .nav-logo {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: var(--white);
+  }
+  .nav-logo span { color: var(--green); }
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--green); }
+
+  /* Mobile nav toggle */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 5px;
+  }
+  .nav-toggle span {
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--white);
+    transition: all 0.3s;
+  }
+
+  /* ─── SECTIONS ─── */
+  section {
+    padding: 8rem 4vw;
+    position: relative;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    margin-bottom: 3rem;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  /* ─── ACHIEVEMENTS ─── */
+  .achievements {
+    background: var(--dark);
+  }
+
+  .achieve-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .achieve-card {
+    background: var(--card);
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+  }
+  .achieve-card:hover { background: #13131e; }
+  .achieve-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+  }
+  .achieve-card:hover::before { transform: scaleX(1); }
+
+  .achieve-year {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--green);
+    margin-bottom: 1rem;
+  }
+  .achieve-icon { font-size: 2.5rem; margin-bottom: 1.2rem; }
+  .achieve-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    color: var(--white);
+  }
+  .achieve-desc {
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ─── BRANCHES TABS ─── */
+  .branches { background: var(--black); }
+
+  .branch-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .branch-tabs::-webkit-scrollbar { display: none; }
+
+  .branch-tab {
+    padding: 1.2rem 2.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+    position: relative;
+    bottom: -1px;
+  }
+  .branch-tab:hover { color: var(--white); }
+  .branch-tab.active {
+    color: var(--green);
+    border-bottom-color: var(--green);
+  }
+
+  .branch-content { display: none; }
+  .branch-content.active { display: block; animation: fadeIn 0.4s ease; }
+
+  .branch-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+  }
+  .branch-name {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 300;
+  }
+  .branch-name em { font-style: italic; color: var(--gold); }
+  .branch-info {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    line-height: 2;
+    text-align: right;
+  }
+  .branch-info strong {
+    color: var(--green);
+    font-weight: 400;
+  }
+
+  /* Schedule table */
+  .schedule-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .schedule-day {
+    background: var(--card);
+    padding: 1.8rem 1.5rem;
+    transition: background 0.3s;
+  }
+  .schedule-day:hover { background: #13131e; }
+
+  .day-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .class-item {
+    margin-bottom: 1rem;
+    padding: 0.7rem 0.9rem;
+    background: rgba(255,255,255,0.02);
+    border-left: 2px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .class-item:hover {
+    border-left-color: var(--gold);
+    background: rgba(212,175,114,0.04);
+  }
+
+  .class-time {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.3rem;
+  }
+  .class-name {
+    font-size: 0.9rem;
+    color: var(--white);
+  }
+  .class-level {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+
+  .no-class {
+    font-size: 0.85rem;
+    color: rgba(240,237,232,0.2);
+    font-style: italic;
+    text-align: center;
+    padding: 1.5rem 0;
+  }
+
+  /* ─── SOCIAL / CONTACT ─── */
+  .contact {
+    background: var(--dark);
+    text-align: center;
+  }
+
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 2rem;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--white);
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .social-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--green);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 0;
+  }
+  .social-link:hover::before { transform: translateX(0); }
+  .social-link:hover { color: var(--black); border-color: var(--green); }
+  .social-link span { position: relative; z-index: 1; }
+  .social-icon { font-size: 1.2rem; position: relative; z-index: 1; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 3rem 4vw;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+    gap: 1rem;
+  }
+  .footer-logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; }
+  .footer-logo span { color: var(--green); }
+  .footer-copy {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      inset: 0;
+      background: rgba(5,5,8,0.98);
+      justify-content: center;
+      align-items: center;
+      gap: 3rem;
+      z-index: 99;
+    }
+    .nav-links.open a { font-size: 1rem; }
+    .nav-toggle { display: flex; z-index: 101; }
+    .nav-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
+
+    .moon { width: 70px; height: 70px; top: 5vh; right: 5vw; }
+    section { padding: 5rem 5vw; }
+    .branch-info { text-align: left; }
+    .schedule-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; text-align: center; }
+    .cursor, .cursor-ring { display: none; }
+    body { cursor: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">MOON<span>DANCE</span></div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">Тухай</a></li>
+    <li><a href="#achievements">Амжилт</a></li>
+    <li><a href="#branches">Салбарууд</a></li>
+    <li><a href="#contact">Холбоо барих</a></li>
+  </ul>
+  <div class="nav-toggle" id="navToggle" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="about">
+  <div class="hero-bg"></div>
+  <div class="stars" id="stars"></div>
+  <div class="moon"></div>
+
+  <p class="hero-eyebrow">Улаанбаатар хот · Формейшн Бүжиг</p>
+  <h1 class="hero-title">Moon<em>Dance</em></h1>
+  <p class="hero-subtitle">Латин · Стандарт · Формейшн</p>
+  <div class="hero-medal">
+    <span class="medal-icon">🥈</span>
+    <span>2022 Дэлхийн Аварга — Мөнгөн Медаль · Брауншвэйг, ХБНГУ</span>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>ДООШ ГҮЙЛГЭХ</span>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section class="achievements" id="achievements">
+  <p class="section-label">Гол амжилтууд</p>
+  <h2 class="section-title">Монголын <em>тэмдэглэлт</em><br>бүжгийн түүх</h2>
+  <div class="achieve-grid">
+    <div class="achieve-card">
+      <div class="achieve-year">2022 · ДАШТ</div>
+      <div class="achieve-icon">🥈</div>
+      <div class="achieve-title">Дэлхийн Дэд Аварга</div>
+      <div class="achieve-desc">ХБНГУ-ын Брауншвэйг хотод Латин формейшн бүжгийн төрөлд мөнгөн медаль хүртсэн. Ази тивийн цор ганц төлөөлөл болж байв.</div>
+    </div>
+    <div class="achieve-card">
+      <div class="achieve-year">2026 · Darkhan Grand Cup</div>
+      <div class="achieve-icon">🏆</div>
+      <div class="achieve-title">Хос Алтан Цом</div>
+      <div class="achieve-desc">Латин болон Стандарт формейшн хоёр төрөлд нэгэн зэрэг түрүүлж, улсын аварга шалгаруулах тэмцээнд 12 дахь удаагаа дараалан аварга боллоо.</div>
+    </div>
+    <div class="achieve-card">
+      <div class="achieve-year">Олон улс</div>
+      <div class="achieve-icon">🌍</div>
+      <div class="achieve-title">Азийн Тэргүүлэгч</div>
+      <div class="achieve-desc">WDSF-ийн олон улсын тэмцээнүүдэд Монгол Улсыг төлөөлж оролцсоор байгаа цор ганц формейшн хамтлаг.</div>
+    </div>
+  </div>
+</section>
+
+<!-- BRANCHES -->
+<section class="branches" id="branches">
+  <p class="section-label">Манай сүлжээ</p>
+  <h2 class="section-title">3 <em>салбар,</em> нэг зүрх</h2>
+
+  <div class="branch-tabs">
+    <button class="branch-tab active" onclick="switchBranch(0)">🌙 Салбар 1 — Төв</button>
+    <button class="branch-tab" onclick="switchBranch(1)">✦ Салбар 2 — Баянзүрх</button>
+    <button class="branch-tab" onclick="switchBranch(2)">◈ Салбар 3 — Сүхбаатар</button>
+  </div>
+
+  <!-- BRANCH 1 -->
+  <div class="branch-content active" id="branch-0">
+    <div class="branch-header">
+      <div class="branch-name">Салбар 1<br><em>Төв дүүрэг</em></div>
+      <div class="branch-info">
+        <div>Хаяг: <strong>Энхтайваны өргөн чөлөө 5</strong></div>
+        <div>Утас: <strong>+976 9911-0001</strong></div>
+        <div>Нийт сурагч: <strong>120+</strong></div>
+      </div>
+    </div>
+    <p class="schedule-title">Хичээлийн хуваарь — Долоо хоног бүр</p>
+    <div class="schedule-grid">
+      <div class="schedule-day">
+        <div class="day-name">Даваа</div>
+        <div class="class-item">
+          <div class="class-time">16:00 – 17:30</div>
+          <div class="class-name">Латин Формейшн</div>
+          <div class="class-level">Дунд · Дэвшилтэт</div>
+        </div>
+        <div class="class-item">
+          <div class="class-time">18:00 – 19:30</div>
+          <div class="class-name">Стандарт Формейшн</div>
+          <div class="class-level">Анхан шат</div>
+        </div>
+      </div>
+      <div class="schedule-day">
+        <div class="day-name">Мягмар</div>
+        <div class="class-item">
+          <div class="class-time">15:00 – 16:30</div>
+          <div class="class-name">Хүүхдийн бүжиг</div>
+          <div class="class-level">6–12 нас</div>
+        </div>
+        <div class="class-item">
+          <div class="class-time">17:00 – 18:30</div>
+          <div class="class-name">Ча-ча-ча</div>
+          <div class="class-level">Анхан шат</div>
+        </div>
+        <div class="class-item">
+          <div class="class-time">19:00 – 20:30</div>
+          <div class="class-name">Румба · Самба</div>
+          <div class="class-level">Дунд шат</div>
+        </div>
+      </div>
+      <div class="schedule-day">
+        <div class="day-name">Лхагва</div>
+        <div class="class-item">
+          <div class="class-time">16:00 – 17:30</div>
+          <div class="class-name">Валс · Танго</div>
+          <div class="class-level">Стандарт анхан</div>
+        </div>
+        <div class="class-item">
+          <div class="class-time">18:00 – 20:00</div>
+          <div class="class-name">Формейшн дасгал</div>
+          <div class="class-level">Тэмцээний баг</div>
+        </div>
+      </div>
+      <div class="schedule-day">
+        <div class="day-name">Пүрэв</div>
+        <div class="class-item">
+          <div class="class-time">15:30 – 17:00</div>
+          <div class="class-name">Хүүхдийн бүжиг</div>
+          <div class="class-level">13–17 нас</div>
+        </div>
+        <div class="class-item">
+          <div class="class-time">17:30 – 19:00</div>
+          <div class="class-name">Пасодобль · Жайв</div>
+          <div class="class-level">Дунд · Дэвшилтэт</div>
+        </div>
+      </div>
+      <div class="schedule-day">
+        <div class="day-name">Баасан</div>
+        <div class="class-item">
+          <div class="class-time">16:00 – 18:00</div>
+          <div class="class-name">Нийт дасгал</div>
+          <div class="class-level">Бүх түвшин</div>
+        </div>
+        <div class="class-item">
+          <div class="class-time">18:30 – 20:00</div>
+          <div class="class-name">Насанд хүрэгчид</div>
+          <div class="class-level">Дебют анги</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRANCH 2 -->
+  <div class="branch-content" id="branch-1">
+    <div class="branch-header">
+      <div class="branch-name">Салбар 2<br><em>Баянзүрх дүүрэг</em></div>
+      <div class="branch-info">
+        <div>Хаяг: <strong>Нарантуул зах орчим, 7-р хороо</strong></div>
+        <div>Утас: <strong>+976 9911-0002</strong></div>
+        <div>Нийт сурагч: <strong>85+</strong></div>
+      </div>
+    </div>
+    <p class="schedule-title">Хичээлийн хуваарь — Долоо хоног бүр</p>
+    <div class="schedule-grid">
+      <div class="schedule-day">
+        <div class="day-name">Даваа</div>
+        <div class="class-item">
+          <div class="class-time">15:00 – 16:30</div>
+          <div class="class-name">Хүүхдийн анхан шат</div>
+          <div class="class-level">5–10 нас</div>
+        </div>
+        <div class="class-item">
+          <div class="class-time">17:00 – 18:30</div>
+          <div class="class-name">Латин дебют</div>
+          <div class="class-level">Шинэ сурагчид</div>
+        </div>
+      </div>
+      <div class="schedule-day">
+        <div class="day-name">Мягмар</div>
+        <div class="class-item">
+          <div class="class-time">16:00 – 17:30</div>
+          <div class="class-name">Ча-ча-ча · Румба</div>
+          <div class="class-level">Дунд шат</div>
+        </div>
+        <div class="class-item">
+          <div class="class-time">18:00 – 19:30</div>
+          <div class="class-name">Самба · Пасодобль</div>
+          <div class="class-level">Дэвшилтэт</div>
+        </div>
+      </div>
+      <div class="schedule-day">
+        <div class="day-name">Лхагва</div>
+        <div class="class-item">
+          <div class="class-time">15:00 – 16:00</div>
+          <div class="class-name">Хүүхдийн Валс</div>
+          <div class="class-level">8–14 нас</div>
+        </div>
+        <div class="class-item">
+          <div class="class-time">16:30 – 18:30</div>
+          <div class="class-name">Стандарт дасгал</div>
+          <div class="class-level">Тэмцээний бэлтгэл</div>
+        </div>
+      </div>
+      <div class="schedule-day">
+        <div class="day-name">Пүрэв</div>
+        <div class="class-item">
+          <div class="class-time">17:00 – 18:30</div>
+          <div class="class-name">Жайв · Танго</div>
+          <div class="class-level">Дунд шат</div>
+        </div>
+        <div class="class-item">
+          <div class="class-time">19:00 – 20:30</div>
+          <div class="class-name">Насанд хүрэгчид</div>
+          <div class="class-level">Бүх түвшин</div>
+        </div>
+      </div>
+      <div class="schedule-day">
+        <div class="day-name">Баасан</div>
+        <div class="class-item">
+          <div class="class-time">15:30 – 17:30</div>
+          <div class="class-name">Нийт дасгал</div>
+          <div class="class-level">Бүх ангиуд</div>
+        </div>
+        <div class="no-class">Орой — Амралт</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRANCH 3 -->
+  <div class="branch-content" id="branch-2">
+    <div class="branch-header">
+      <div class="branch-name">Салбар 3<br><em>Сүхбаатар дүүрэг</em></div>
+      <div class="branch-info">
+        <div>Хаяг: <strong>Их Дэлхий, 1-р хороо</strong></div>
+        <div>Утас: <strong>+976 9911-0003</strong></div>
+        <div>Нийт сурагч: <strong>70+</strong></div>
+      </div>
+    </div>
+    <p class="schedule-title">Хичээлийн хуваарь — Долоо хоног бүр</p>
+    <div class="schedule-grid">
+      <div class="schedule-day">
+        <div class="day-name">Даваа</div>
+        <div class="class-item">
+          <div class="class-time">16:00 – 17:00</div>
+          <div class="class-name">Хүүхдийн дебют</div>
+          <div class="class-level">4–8 нас</div>
+        </div>
+        <div class="class-item">
+          <div class="class-time">17:30 – 19:00</div>
+          <div class="class-name">Латин анхан шат</div>
+          <div class="class-level">Шинэ сурагчид</div>
+        </div>
+      </div>
+      <div class="schedule-day">
+        <div class="day-name">Мягмар</div>
+        <div class="class-item">
+          <div class="class-time">15:30 – 17:00</div>
+          <div class="class-name">Ча-ча-ча</div>
+          <div class="class-level">Анхан · Дунд</div>
+        </div>
+        <div class="class-item">
+          <div class="class-time">17:30 – 19:00</div>
+          <div class="class-name">Румба · Жайв</div>
+          <div class="class-level">Дунд шат</div>
+        </div>
+      </div>
+      <div class="schedule-day">
+        <div class="day-name">Лхагва</div>
+        <div class="class-item">
+          <div class="class-time">16:00 – 18:00</div>
+          <div class="class-name">Формейшн бэлтгэл</div>
+          <div class="class-level">Шилэгдсэн баг</div>
+        </div>
+        <div class="no-class">Өглөө — Амралт</div>
+      </div>
+      <div class="schedule-day">
+        <div class="day-name">Пүрэв</div>
+        <div class="class-item">
+          <div class="class-time">16:00 – 17:30</div>
+          <div class="class-name">Валс · Фокстрот</div>
+          <div class="class-level">Стандарт дунд</div>
+        </div>
+        <div class="class-item">
+          <div class="class-time">18:00 – 19:30</div>
+          <div class="class-name">Насанд хүрэгчид</div>
+          <div class="class-level">Сонгодог бүжиг</div>
+        </div>
+      </div>
+      <div class="schedule-day">
+        <div class="day-name">Баасан</div>
+        <div class="class-item">
+          <div class="class-time">15:00 – 16:30</div>
+          <div class="class-name">Хүүхдийн дасгал</div>
+          <div class="class-level">Нийт хүүхдүүд</div>
+        </div>
+        <div class="class-item">
+          <div class="class-time">17:00 – 19:00</div>
+          <div class="class-name">Нийт нэгтгэл</div>
+          <div class="class-level">Тэмцээний баг</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <p class="section-label">Холбоо барих</p>
+  <h2 class="section-title">Биднийг <em>дагаарай</em></h2>
+  <p style="color: var(--muted); font-size: 1.1rem; max-width: 500px; margin: 0 auto;">Хамгийн сүүлийн мэдээ, тэмцээний мэдээлэл болон бүжгийн тоглолтуудыг дагаж авна уу.</p>
+  <div class="social-links">
+    <a href="https://instagram.com/moondancemongolia" target="_blank" class="social-link">
+      <span class="social-icon">📸</span>
+      <span>@moondancemongolia</span>
+    </a>
+    <a href="https://facebook.com" target="_blank" class="social-link">
+      <span class="social-icon">👥</span>
+      <span>Moon Dance Клуб</span>
+    </a>
+    <a href="https://youtube.com" target="_blank" class="social-link">
+      <span class="social-icon">▶</span>
+      <span>YouTube — Moonda</span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">MOON<span>DANCE</span></div>
+  <div class="footer-copy">© 2026 Moon Dance Клуб · Улаанбаатар · Бүх эрх хуулиар хамгаалагдсан</div>
+</footer>
+
+<script>
+  // Stars
+  const starsEl = document.getElementById('stars');
+  for(let i = 0; i < 80; i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2.5 + 0.5;
+    s.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      top:${Math.random()*100}%;
+      --d:${2+Math.random()*4}s;
+      --delay:-${Math.random()*4}s;
+    `;
+    starsEl.appendChild(s);
+  }
+
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+  (function ani(){
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    cursor.style.left = mx+'px'; cursor.style.top = my+'px';
+    ring.style.left = rx+'px'; ring.style.top = ry+'px';
+    requestAnimationFrame(ani);
+  })();
+
+  // Branch tabs
+  function switchBranch(i){
+    document.querySelectorAll('.branch-tab').forEach((t,j) => t.classList.toggle('active', j===i));
+    document.querySelectorAll('.branch-content').forEach((c,j) => c.classList.toggle('active', j===i));
+  }
+
+  // Mobile nav
+  function toggleNav(){
+    const nav = document.getElementById('navLinks');
+    const toggle = document.getElementById('navToggle');
+    nav.classList.toggle('open');
+    toggle.classList.toggle('open');
+  }
+  document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => {
+    document.getElementById('navLinks').classList.remove('open');
+    document.getElementById('navToggle').classList.remove('open');
+  }));
+
+  // Intersection observer for fade-in
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.style.opacity = '1'; });
+  }, {threshold: 0.1});
+  document.querySelectorAll('.achieve-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transition = 'opacity 0.7s ease, background 0.4s';
+    obs.observe(el);
+  });
+</script>
+</body>
